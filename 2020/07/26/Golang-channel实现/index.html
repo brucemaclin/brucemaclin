@@ -79,13 +79,19 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://brucemaclin.github.io/index.html">
+<meta name="description" content="Golang channel 初探Goroutine和channel是Golang实现高并发的基础。深入理解其背后的实现，写起代码来才不慌-_- 首先我们定义如下代码，来看看Golang底层是如何实现channel的。 1234567891011121314package mainimport (        &quot;fmt&quot;)func main() &amp;#123;        c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Golang-channel实现">
+<meta property="og:url" content="http://brucemaclin.github.io/2020/07/26/Golang-channel%E5%AE%9E%E7%8E%B0/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Golang channel 初探Goroutine和channel是Golang实现高并发的基础。深入理解其背后的实现，写起代码来才不慌-_- 首先我们定义如下代码，来看看Golang底层是如何实现channel的。 1234567891011121314package mainimport (        &quot;fmt&quot;)func main() &amp;#123;        c">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/961750/201904/961750-20190405191013496-1305438599.png">
+<meta property="article:published_time" content="2020-07-26T13:47:36.517Z">
+<meta property="article:modified_time" content="2020-07-26T13:48:02.695Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img2018.cnblogs.com/blog/961750/201904/961750-20190405191013496-1305438599.png">
 
 
 
@@ -115,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="http://brucemaclin.github.io/"/>
+  <link rel="canonical" href="http://brucemaclin.github.io/2020/07/26/Golang-channel实现/"/>
 
 
 
 
 
-  <title>Hexo</title>
+  <title>Golang-channel实现 | Hexo</title>
   
 
 
@@ -140,8 +146,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -214,9 +219,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -246,9 +251,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/07/26/Golang-channel%E5%AE%9E%E7%8E%B0/" itemprop="url">Golang-channel实现</a></h1>
+          <h1 class="post-title" itemprop="name headline">Golang-channel实现</h1>
         
 
         <div class="post-meta">
@@ -298,9 +301,7 @@
       
 
       
-        
-          
-            <h1 id="Golang-channel-初探"><a href="#Golang-channel-初探" class="headerlink" title="Golang channel 初探"></a>Golang channel 初探</h1><p>Goroutine和channel是Golang实现高并发的基础。深入理解其背后的实现，写起代码来才不慌-_-</p>
+        <h1 id="Golang-channel-初探"><a href="#Golang-channel-初探" class="headerlink" title="Golang channel 初探"></a>Golang channel 初探</h1><p>Goroutine和channel是Golang实现高并发的基础。深入理解其背后的实现，写起代码来才不慌-_-</p>
 <p>首先我们定义如下代码，来看看Golang底层是如何实现channel的。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">        &quot;fmt&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">        c :&#x3D; make(chan int, 5)</span><br><span class="line">        c &lt;- 1</span><br><span class="line"></span><br><span class="line">        g :&#x3D; &lt;-c</span><br><span class="line">        fmt.Println(g)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -342,8 +343,6 @@
 
 <h2 id="关channel"><a href="#关channel" class="headerlink" title="关channel"></a>关channel</h2><p>最后我们来看看close channel</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">func closechan(c *hchan) &#123;</span><br><span class="line">&#x2F;&#x2F;关nil channel直接panic</span><br><span class="line">	if c &#x3D;&#x3D; nil &#123;</span><br><span class="line">		panic(plainError(&quot;close of nil channel&quot;))</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	lock(&amp;c.lock)</span><br><span class="line">	&#x2F;&#x2F;重复关闭 panic</span><br><span class="line">	if c.closed !&#x3D; 0 &#123;</span><br><span class="line">		unlock(&amp;c.lock)</span><br><span class="line">		panic(plainError(&quot;close of closed channel&quot;))</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	if raceenabled &#123;</span><br><span class="line">		callerpc :&#x3D; getcallerpc()</span><br><span class="line">		racewritepc(unsafe.Pointer(c), callerpc, funcPC(closechan))</span><br><span class="line">		racerelease(unsafe.Pointer(c))</span><br><span class="line">	&#125;</span><br><span class="line"> &#x2F;&#x2F;设置channel标记</span><br><span class="line">	c.closed &#x3D; 1</span><br><span class="line"></span><br><span class="line">	var glist *g</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F; release all readers</span><br><span class="line">	for &#123;</span><br><span class="line">	   &#x2F;&#x2F;通知所有的读goroutine</span><br><span class="line">		sg :&#x3D; c.recvq.dequeue()</span><br><span class="line">		if sg &#x3D;&#x3D; nil &#123;</span><br><span class="line">			break</span><br><span class="line">		&#125;</span><br><span class="line">		if sg.elem !&#x3D; nil &#123;</span><br><span class="line">			typedmemclr(c.elemtype, sg.elem)</span><br><span class="line">			sg.elem &#x3D; nil</span><br><span class="line">		&#125;</span><br><span class="line">		if sg.releasetime !&#x3D; 0 &#123;</span><br><span class="line">			sg.releasetime &#x3D; cputicks()</span><br><span class="line">		&#125;</span><br><span class="line">		gp :&#x3D; sg.g</span><br><span class="line">		gp.param &#x3D; nil</span><br><span class="line">		if raceenabled &#123;</span><br><span class="line">			raceacquireg(gp, unsafe.Pointer(c))</span><br><span class="line">		&#125;</span><br><span class="line">		gp.schedlink.set(glist)</span><br><span class="line">		glist &#x3D; gp</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F; release all writers (they will panic)</span><br><span class="line">	for &#123;</span><br><span class="line">		sg :&#x3D; c.sendq.dequeue()</span><br><span class="line">		if sg &#x3D;&#x3D; nil &#123;</span><br><span class="line">			break</span><br><span class="line">		&#125;</span><br><span class="line">		sg.elem &#x3D; nil</span><br><span class="line">		if sg.releasetime !&#x3D; 0 &#123;</span><br><span class="line">			sg.releasetime &#x3D; cputicks()</span><br><span class="line">		&#125;</span><br><span class="line">		gp :&#x3D; sg.g</span><br><span class="line">		gp.param &#x3D; nil</span><br><span class="line">		if raceenabled &#123;</span><br><span class="line">			raceacquireg(gp, unsafe.Pointer(c))</span><br><span class="line">		&#125;</span><br><span class="line">		gp.schedlink.set(glist)</span><br><span class="line">		glist &#x3D; gp</span><br><span class="line">	&#125;</span><br><span class="line">	unlock(&amp;c.lock)</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F; Ready all Gs now that we&#39;ve dropped the channel lock.</span><br><span class="line">	for glist !&#x3D; nil &#123;</span><br><span class="line">		gp :&#x3D; glist</span><br><span class="line">		glist &#x3D; glist.schedlink.ptr()</span><br><span class="line">		gp.schedlink &#x3D; 0</span><br><span class="line">		goready(gp, 3)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          
-        
       
     </div>
     
@@ -360,12 +359,12 @@
       
 
       
+      
+      
 
       
 
       
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -375,10 +374,11 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -386,6 +386,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -406,8 +410,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -449,6 +462,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Golang-channel-初探"><span class="nav-number">1.</span> <span class="nav-text">Golang channel 初探</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#channel结构"><span class="nav-number">1.1.</span> <span class="nav-text">channel结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#channel初始化"><span class="nav-number">1.2.</span> <span class="nav-text">channel初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写channel"><span class="nav-number">1.3.</span> <span class="nav-text">写channel</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#读channel"><span class="nav-number">1.4.</span> <span class="nav-text">读channel</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关channel"><span class="nav-number">1.5.</span> <span class="nav-text">关channel</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -589,6 +618,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
